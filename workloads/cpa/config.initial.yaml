@@ -1,0 +1,10 @@
+config-version: 8
+server:
+  host: "127.0.0.1"
+  port: 8317
+management:
+  allow-remote: true
+access:
+  api-keys: []
+oauth:
+  auth-dir: "@MOYU_WORKLOAD_ROOT@/auths"
