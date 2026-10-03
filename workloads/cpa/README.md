@@ -1,6 +1,6 @@
 # CPA workload packaging
 
-This directory packages CLIProxyAPI as a generic `command` Artifact for `kb13` (`aarch64`). It contains no passwords, provider credentials, OAuth files, or client API keys.
+This directory packages CLIProxyAPI as a generic `command` Artifact for `kb13` (`aarch64`). It contains no passwords, provider credentials, OAuth files, client API keys, or plugin binaries.
 
 ## Pinned upstream input
 
@@ -16,12 +16,23 @@ The Unified Workload Multi-Asset source packages individual files, so the execut
 ## Runtime contract
 
 - Runtime command: select `./bootstrap.sh` as the command entrypoint. The script then executes `cli-proxy-api --config <persistent config path>`.
-- `MOYU_WORKLOAD_ROOT` holds `config.yaml` and `auths/`; both survive Artifact updates and restarts.
+- `MOYU_WORKLOAD_ROOT` holds persistent `config.yaml`, `auths/`, and `plugins/`; they survive Artifact updates, rollback, and service restarts.
 - `MOYU_ARTIFACT_ROOT` is the immutable current Artifact directory containing the binary and initial template.
-- The initial config binds only to `127.0.0.1:8317`. OAuth `auth-dir` is initialized under the persistent root because this pinned version does not expand environment variables in that field.
+- The initial config binds only to `127.0.0.1:8317`. OAuth `auth-dir` and plugin `dir` are initialized under the persistent root because this pinned version does not expand environment variables in those fields.
+- `bootstrap.sh` creates the persistent `auths/` and `plugins/` directories before starting CPA.
 - The initial config is copied only when persistent `config.yaml` is absent. A later Artifact template never replaces it.
 - vps-deploy injects `MANAGEMENT_PASSWORD` from the `cpa-management-key` secret reference. The password is not stored here or in the Artifact.
 - The health endpoint for this pinned version is `/healthz`.
+
+## Plugin persistence
+
+The initial configuration enables the CPA plugin host and sets `plugins.dir` to the persistent workload root. Plugins installed from the Management Center / Plugin Store are therefore written outside the immutable Artifact and survive CPA Artifact OTA or rollback.
+
+Plugin configuration remains in persistent `config.yaml`. Plugin binaries and plugin-owned state must not be committed to this public repository or packaged into the CPA MOYUWORK1 Artifact.
+
+Installing a native CPA plugin is a trust decision: plugins execute in-process with CPA and are not sandboxed. Prefer the official store or plugins whose source and release artifacts have been reviewed.
+
+For deployments created before this persistent plugin directory was added, updating this template alone will not rewrite the existing `config.yaml`. Configure that deployment once through the Management Center so `plugins.enabled: true` and `plugins.dir` points to the workload's persistent `plugins/` directory.
 
 ## First-start access gate
 
@@ -31,4 +42,4 @@ First deploy with no Cloudflare Tunnel exposure. Open the Management UI through 
 
 ## Source verification
 
-The v8.0.10 tag was checked for the `--config` option, config version 8 schema, `MANAGEMENT_PASSWORD`, empty-key middleware behavior, Management UI routes, and `/healthz`. Recheck these facts whenever changing the pinned upstream version.
+The v8.0.10 tag was checked for the `--config` option, config version 8 schema, `MANAGEMENT_PASSWORD`, empty-key middleware behavior, Management UI routes, plugin persistence semantics, and `/healthz`. Recheck these facts whenever changing the pinned upstream version.

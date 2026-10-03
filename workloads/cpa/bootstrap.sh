@@ -5,7 +5,7 @@ ROOT="${MOYU_WORKLOAD_ROOT:?MOYU_WORKLOAD_ROOT is required}"
 ARTIFACT_ROOT="${MOYU_ARTIFACT_ROOT:?MOYU_ARTIFACT_ROOT is required}"
 CONFIG="${ROOT}/config.yaml"
 
-mkdir -p "${ROOT}/auths"
+mkdir -p "${ROOT}/auths" "${ROOT}/plugins"
 if [ ! -f "${CONFIG}" ]; then
     escaped_root="$(printf '%s' "${ROOT}" | sed -e 's/[\\&|]/\\&/g')"
     umask 077

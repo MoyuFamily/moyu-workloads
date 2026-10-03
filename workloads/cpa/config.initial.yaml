@@ -8,3 +8,7 @@ access:
   api-keys: []
 oauth:
   auth-dir: "@MOYU_WORKLOAD_ROOT@/auths"
+plugins:
+  enabled: true
+  dir: "@MOYU_WORKLOAD_ROOT@/plugins"
+  configs: {}
