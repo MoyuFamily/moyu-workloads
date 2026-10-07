@@ -1,0 +1,18 @@
+services:
+  app:
+    image: ghcr.io/basketikun/chatgpt2api@sha256:709b6ae4a7e0bbfcdd557a1b675d8f484114154aeb2ecb71259ae8fd7cafb9a3
+    platform: linux/arm64
+    entrypoint: ["/bin/sh", "/moyu/artifact/bootstrap.sh"]
+    command: ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80", "--access-log"]
+    ports:
+      - "127.0.0.1:8320:80"
+    environment:
+      STORAGE_BACKEND: json
+    mem_limit: 512m
+    pids_limit: 256
+    stop_grace_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
