@@ -1,0 +1,26 @@
+# Runtime-only source; the unified pipeline must lock this image before publication.
+# Requires a verified linux/arm64 image before deployment to kb13.
+services:
+  saylo:
+    image: ghcr.io/parsifalc/saylo@sha256:4ca17497fa0e411eaf0af33cad34a114193b0e725700331c8fe244f532b78ec5
+    platform: linux/arm64
+    network_mode: host
+    init: true
+    mem_limit: 512m
+    pids_limit: 256
+    stop_grace_period: 20s
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3100/api/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

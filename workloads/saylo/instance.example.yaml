@@ -1,0 +1,30 @@
+# Instance configuration only. Add the verified published Artifact pointer
+# through the unified pipeline before placing this workload in Fleet.
+memoryMiB: 512
+startupGraceSeconds: 30
+healthTimeoutSeconds: 120
+listenPorts: [3100]
+env:
+  CPA_BASE_URL: http://127.0.0.1:8317/v1
+  COACH_MODEL: gpt-6-luna
+  SEARCH_MODEL: gpt-6-luna
+  PORT: "3100"
+  BIND_HOST: 127.0.0.1
+  TLS_PORT: "0"
+  SAYLO_DATA_DIR: /moyu/workload/data
+envRefs:
+  OPENAI_API_KEY: saylo-cpa-api-key
+  SAYLO_USERS: saylo-users
+  SAYLO_AUTH_SECRET: saylo-auth-secret
+registryAuth:
+  ghcr.io:
+    usernameAlias: ghcr-reader
+    passwordAlias: ghcr-read-token
+expose:
+  - name: saylo
+    protocol: http
+    localPort: 3100
+    publicHost: saylo.moyuday.com
+    transport: cloudflare-tunnel
+    access: public
+    healthPath: /api/health
