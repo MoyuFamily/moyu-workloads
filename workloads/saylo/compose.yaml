@@ -2,7 +2,7 @@
 # Requires a verified linux/arm64 image before deployment to kb13.
 services:
   saylo:
-    image: ghcr.io/parsifalc/saylo@sha256:4ca17497fa0e411eaf0af33cad34a114193b0e725700331c8fe244f532b78ec5
+    image: ghcr.io/parsifalc/saylo@sha256:c81f7e1ce58b4159b02c4a4d35123c04b3b03aedf396a2a8ca5278d314059ce7
     platform: linux/arm64
     network_mode: host
     init: true

@@ -3,8 +3,8 @@
 Runtime-only Compose source for the unified MOYUWORK1 Artifact pipeline.
 The upstream image is private: `ghcr.io/parsifalc/saylo`.
 
-kb13 is `aarch64`. The pinned image is `ghcr.io/parsifalc/saylo@sha256:4ca17497fa0e411eaf0af33cad34a114193b0e725700331c8fe244f532b78ec5`.
-Upstream commit: `86b0b40d97ae536859c04554011e189fdc6db9f6`. Both linux/amd64 and linux/arm64 were
+kb13 is `aarch64`. The pinned image is `ghcr.io/parsifalc/saylo@sha256:c81f7e1ce58b4159b02c4a4d35123c04b3b03aedf396a2a8ca5278d314059ce7`.
+Upstream commit: `540803fffbeeb5314661852bc3bcb42f14012ff5`. Both linux/amd64 and linux/arm64 were
 built and health-tested on native CI runners before index promotion.
 
 The Build Contract should include only `compose.yaml`. The README and
