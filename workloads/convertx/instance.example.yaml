@@ -1,0 +1,28 @@
+# Instance configuration only. Publish and verify an Artifact through the
+# unified pipeline before adding its pointer to Fleet. No secret values here.
+memoryMiB: 1024
+startupGraceSeconds: 10
+healthTimeoutSeconds: 120
+listenPorts:
+- 3300
+env:
+  PUID: '999'
+  PGID: '988'
+  UMASK: '077'
+  ACCOUNT_REGISTRATION: 'false'
+  ALLOW_UNAUTHENTICATED: 'false'
+  HTTP_ALLOWED: 'false'
+  MAX_CONVERT_PROCESS: '2'
+  AUTO_DELETE_EVERY_N_HOURS: '24'
+  FFMPEG_OUTPUT_ARGS: -threads 1
+  TZ: Asia/Shanghai
+envRefs:
+  JWT_SECRET: convertx-jwt-secret
+expose:
+- name: convertx
+  protocol: http
+  localPort: 3300
+  publicHost: convertx.moyuday.com
+  healthPath: /healthcheck
+  transport: cloudflare-tunnel
+  access: public

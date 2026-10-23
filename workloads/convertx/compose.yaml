@@ -1,0 +1,24 @@
+services:
+  convertx:
+    image: ghcr.io/c4illin/convertx@sha256:a64d03997fa2686608ed31121e090f21eb8e91dfd2eb06a6aba86480deabe8c1
+    platform: linux/amd64
+    entrypoint: ["/bin/sh", "/moyu/artifact/bootstrap.sh"]
+    command: ["bun", "run", "dist/src/index.js"]
+    init: true
+    ports:
+      - "127.0.0.1:3300:3000"
+    cpus: 2
+    mem_limit: 1g
+    pids_limit: 256
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:3000/healthcheck"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
