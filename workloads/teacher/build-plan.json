@@ -1,0 +1,15 @@
+{
+  "name": "teacher",
+  "runtime": {
+    "type": "command",
+    "command": ["runtime/node", "scripts/start-workload.mjs"],
+    "workingDirectory": "."
+  },
+  "health": {
+    "type": "command",
+    "command": ["runtime/node", "scripts/health-workload.mjs"],
+    "workingDirectory": "."
+  },
+  "include": ["**"],
+  "exclude": []
+}
